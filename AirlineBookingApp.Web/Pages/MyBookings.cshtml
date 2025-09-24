@@ -1,0 +1,102 @@
+﻿@page
+@model AirlineBookingApp.Web.Pages.MyBookingsModel
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container py-5">
+    
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h3 class="mb-0">
+                        <i class="bi bi-list-check me-2"></i>
+                        Your Bookings
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    @if (Model.Bookings.Any())
+                    {
+                        <table class="table table-bordered table-striped align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Flight</th>
+                                    <th>Seat</th>
+                                    <th>Passenger</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var booking in Model.Bookings)
+                                {
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-hash me-1"></i>@booking.ReferenceNumber
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-airplane-engines me-1"></i>
+                                            @booking.Flight.FlightNumber
+                                            <span class="text-muted small">(@booking.Flight.Source &rarr; @booking.Flight.Destination)</span>
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-person-seat me-1"></i>@booking.Seat.SeatNumber
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-person-fill me-1"></i>@booking.PassengerName
+                                            <span class="text-muted small">(@booking.PassengerEmail)</span>
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-calendar-event me-1"></i>@booking.BookingDate.ToString("yyyy-MM-dd")
+                                        </td>
+                                        <td>
+                                            @if (booking.Status == "Confirmed")
+                                            {
+                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Confirmed</span>
+                                            }
+                                            else if (booking.Status == "Cancelled")
+                                            {
+                                                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Cancelled</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@booking.Status</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (booking.Status == "Confirmed")
+                                            {
+                                                <form method="post" asp-page-handler="Cancel" asp-route-bookingId="@booking.Id" class="d-inline">
+                                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill">
+                                                        <i class="bi bi-x-octagon me-1"></i>Cancel
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else if (Request.Query.ContainsKey("email"))
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-exclamation-circle me-2"></i>No bookings found for this email.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+}
