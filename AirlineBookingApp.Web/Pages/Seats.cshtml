@@ -1,0 +1,40 @@
+﻿@page "{id:int}"
+@model AirlineBookingApp.Web.Pages.SeatsModel
+@{
+}
+@if (Model.Flight == null)
+{
+    <p>Flight not found.</p>
+}
+else
+{
+    <h2>Seats for Flight: @Model.Flight.FlightNumber</h2>
+    <p>@Model.Flight.Source → @Model.Flight.Destination</p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Seat Number</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var seat in Model.Flight.Seats)
+            {
+                <tr>
+                    <td>@seat.SeatNumber</td>
+                    <td>@(seat.IsBooked ? "Booked" : "Available")</td>
+                    <td>
+                        @if (!seat.IsBooked)
+                        {
+                            <a asp-page="/Book" asp-route-seatId="@seat.Id" class="btn btn-success">Book</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+}

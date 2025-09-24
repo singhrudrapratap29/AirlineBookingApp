@@ -1,0 +1,16 @@
+# Visual Studio 
+.vs/
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+
+# NuGet packages
+packages/
+
+# Test results
+TestResults/
+
+# User-specific files
+*.user
+*.suo

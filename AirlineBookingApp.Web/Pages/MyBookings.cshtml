@@ -1,0 +1,50 @@
+﻿@page
+@model AirlineBookingApp.Web.Pages.MyBookingsModel
+@{
+    ViewData["Title"] = "My Bookings";
+}
+<h2> My Bookings </h2>
+<form method="get">
+    <div class="form-group">
+        <label>Email:</label>
+        <input type="email" name="email" class="form-control" placeholder="Enter your email" />
+        <button type="submit" class="btn btn-primary mt-2">Find Bookings</button>
+    </div>
+</form>
+@if (Model.Bookings.Any())
+{
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Flight</th>
+                <th>Seat</th>
+                <th>Passenger</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td>@booking.ReferenceNumber</td>
+                    <td>@booking.Flight.FlightNumber (@booking.Flight.Source → @booking.Flight.Destination)</td>
+                    <td>@booking.Seat.SeatNumber</td>
+                    <td>@booking.PassengerName (@booking.PassengerEmail)</td>
+                    <td>@booking.BookingDate</td>
+                    <td>@booking.Status</td>
+                    <td>
+                        <form method="post" asp-page-handler="Cancel" asp-route-bookingId="@booking.Id" style="display:inline" >
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Request.Query.ContainsKey("email"))
+{
+    <p>No bookings found for this email.</p>
+}

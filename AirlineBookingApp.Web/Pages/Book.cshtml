@@ -1,0 +1,22 @@
+﻿@page "{seatId:int}"
+@model AirlineBookingApp.Web.Pages.BookModel
+@{
+}
+<h2>Book Seat</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Passenger Name</label>
+        <input asp-for="Booking.PassengerName" class="form-control" />
+        <span asp-validation-for="Booking.PassengerName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Passenger Email</label>
+        <input asp-for="Booking.PassengerEmail" class="form-control" />
+        <span asp-validation-for="Booking.PassengerEmail" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+</form>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
